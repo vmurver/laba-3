@@ -17,4 +17,9 @@ def moving_average_forecast(data, window, n_years):
     forecast = [moving_avg] * n_years
     return forecast
 
-window_size = 3  # Размер окна скользящей среднейn_years_forecast = 5  # Количество лет для прогнозаforecast_values = moving_average_forecast(data, window_size, n_years_forecast)
+window_size = 3  
+# Размер окна скользящей среднейn_years_forecast = 5  # Количество лет для прогноза forecast_values = moving_average_forecast(data, window_size, n_years_forecast)
+
+# Добавляем прогнозируемые годы и значения в DataFramelast_year = data['Год'].iloc[-1]
+forecast_years = list(range(last_year + 1, last_year + 1 + n_years_forecast))
+forecast_df = pd.DataFrame({'Год': forecast_years, 'Инфляция': forecast_values})
