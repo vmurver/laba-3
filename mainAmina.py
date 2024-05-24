@@ -20,3 +20,19 @@ for column in data.columns[1:]:
     initial_value = data[column].iloc[0]
     final_value = data[column].iloc[-1]
     change[column] = final_value - initial_value
+
+# Наибольшее снижение и наименьшее снижениеmax_decrease = min(change, key=change.get)
+min_decrease = max(change, key=change.get)
+
+print(f"Наибольшее снижение заболеваемости: {max_decrease}, снижение на {change[max_decrease]}")
+print(f"Наименьшее снижение заболеваемости: {min_decrease}, снижение на {change[min_decrease]}")
+
+# Прогнозирование методом скользящей среднейdef moving_average_forecast(series, window, n_years):
+    moving_avg = series.rolling(window=window).mean().iloc[-1]
+    forecast = [moving_avg] * n_years
+    return forecast
+
+window_size = 3  # Размер окна скользящей среднейn_years_forecast = 8  # Количество лет для прогнозаforecast_data = {}
+for column in data.columns[1:]:
+    forecast_values = moving_average_forecast(data[column], window_size, n_years_forecast)
+    forecast_data[column] = forecast_values
