@@ -1,67 +1,66 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 import matplotlib.pyplot as plt
-
 def plot_exchange_rates():
     file_path = r'C:\Valuta.txt'
-    data = pd.read_csv(file_path, parse_dates=['Date'])
+    data = pd.read_csv(file_path, parse_dates=['Дата'])
     print(data)
 
     plt.figure(figsize=(12, 6))
-    plt.plot(data['Date'], data['Currency1'], label='Currency 1')
-    plt.plot(data['Date'], data['Currency2'], label='Currency 2')
-    plt.xlabel('Date')
-    plt.ylabel('Exchange Rate')
-    plt.title('Exchange Rate of Ruble to Two Currencies')
+    plt.plot(data['Дата'], data['Доллар'], label='Доллар')
+    plt.plot(data['Дата'], data['Евро'], label='Евро')
+    plt.xlabel('Дата')
+    plt.ylabel('Курс обмена')
+    plt.title('Курс обмена рубля к доллару и евро')
     plt.legend()
     plt.grid(True)
     plt.show()
 
-    data['Change_Currency1'] = data['Currency1'].diff()
-    data['Change_Currency2'] = data['Currency2'].diff()
+    data['Изменение_доллара'] = data['Доллар'].diff()
+    data['Изменение_евро'] = data['Евро'].diff()
 
-    max_gain_currency1 = data['Change_Currency1'].max()
-    max_loss_currency1 = data['Change_Currency1'].min()
-    max_gain_day_currency1 = data.loc[data['Change_Currency1'].idxmax(), 'Date']
-    max_loss_day_currency1 = data.loc[data['Change_Currency1'].idxmin(), 'Date']
+    max_gain_currency1 = data['Изменение_доллара'].max()
+    max_loss_currency1 = data['Изменение_доллара'].min()
+    max_gain_day_currency1 = data.loc[data['Изменение_доллара'].idxmax(), 'Дата']
+    max_loss_day_currency1 = data.loc[data['Изменение_доллара'].idxmin(), 'Дата']
 
-    max_gain_currency2 = data['Change_Currency2'].max()
-    max_loss_currency2 = data['Change_Currency2'].min()
-    max_gain_day_currency2 = data.loc[data['Change_Currency2'].idxmax(), 'Date']
-    max_loss_day_currency2 = data.loc[data['Change_Currency2'].idxmin(), 'Date']
+    max_gain_currency2 = data['Изменение_евро'].max()
+    max_loss_currency2 = data['Изменение_евро'].min()
+    max_gain_day_currency2 = data.loc[data['Изменение_евро'].idxmax(), 'Дата']
+    max_loss_day_currency2 = data.loc[data['Изменение_евро'].idxmin(), 'Дата']
 
-    print(f'Currency 1: Max Gain: {max_gain_currency1} on {max_gain_day_currency1}')
-    print(f'Currency 1: Max Loss: {max_loss_currency1} on {max_loss_day_currency1}')
-    print(f'Currency 2: Max Gain: {max_gain_currency2} on {max_gain_day_currency2}')
-    print(f'Currency 2: Max Loss: {max_loss_currency2} on {max_loss_day_currency2}')
+    print(f'Доллар: Максимальный подъем: {max_gain_currency1} на {max_gain_day_currency1}')
+    print(f'Доллар: Максимальное падение: {max_loss_currency1} на {max_loss_day_currency1}')
+    print(f'Евро: Максимальный подъем: {max_gain_currency2} на {max_gain_day_currency2}')
+    print(f'Евро: Максимальное падение: {max_loss_currency2} на {max_loss_day_currency2}')
 
     N = 5
-    data['SMA_Currency1'] = data['Currency1'].rolling(window=N).mean()
-    data['SMA_Currency2'] = data['Currency2'].rolling(window=N).mean()
+    data['SMA_Доллар'] = data['Доллар'].rolling(window=N).mean()
+    data['SMA_Евро'] = data['Евро'].rolling(window=N).mean()
 
     forecast_days = 10
-    last_date = data['Date'].iloc[-1]
+    last_date = data['Дата'].iloc[-1]
     dates = pd.date_range(start=last_date, periods=forecast_days + 1, inclusive='right')
 
-    forecast_currency1_values = [data['SMA_Currency1'].iloc[-1]] * forecast_days
-    forecast_currency2_values = [data['SMA_Currency2'].iloc[-1]] * forecast_days
+    forecast_currency1_values = [data['SMA_Доллар'].iloc[-1]] * forecast_days
+    forecast_currency2_values = [data['SMA_Евро'].iloc[-1]] * forecast_days
 
     forecast_data = pd.DataFrame({
-        'Date': dates,
-        'Currency1': forecast_currency1_values,
-        'Currency2': forecast_currency2_values
+        'Дата': dates,
+        'Доллар': forecast_currency1_values,
+        'Евро': forecast_currency2_values
     })
 
     combined_data = pd.concat([data, forecast_data], ignore_index=True)
 
     plt.figure(figsize=(12, 6))
-    plt.plot(combined_data['Date'], combined_data['Currency1'], label='Currency 1')
-    plt.plot(combined_data['Date'], combined_data['Currency2'], label='Currency 2')
-    plt.plot(forecast_data['Date'], forecast_data['Currency1'], 'r--', label='Forecast Currency 1')
-    plt.plot(forecast_data['Date'], forecast_data['Currency2'], 'b--', label='Forecast Currency 2')
-    plt.xlabel('Date')
-    plt.ylabel('Exchange Rate')
-    plt.title('Exchange Rate of Ruble to Two Currencies with Forecast')
+    plt.plot(combined_data['Дата'], combined_data['Доллар'], label='Доллар')
+    plt.plot(combined_data['Дата'], combined_data['Евро'], label='Евро')
+    plt.plot(forecast_data['Дата'], forecast_data['Доллар'], 'r--', label='Прогноз доллара')
+    plt.plot(forecast_data['Дата'], forecast_data['Евро'], 'b--', label='Прогноз евро')
+    plt.xlabel('Дата')
+    plt.ylabel('Курс обмена')
+    plt.title('Курс обмена рубля к доллару и евро с прогнозом')
     plt.legend()
     plt.grid(True)
     plt.show()
