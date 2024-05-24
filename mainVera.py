@@ -72,4 +72,6 @@ plt.ylabel('Exchange Rate')
 plt.title('Exchange Rate of Ruble to Two Currencies with Forecast')
 plt.legend()
 plt.grid(True)
+
 plt.show()
+
