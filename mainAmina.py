@@ -36,3 +36,10 @@ window_size = 3  # Размер окна скользящей среднейn_ye
 for column in data.columns[1:]:
     forecast_values = moving_average_forecast(data[column], window_size, n_years_forecast)
     forecast_data[column] = forecast_values
+
+# Добавляем прогнозируемые годы и значения в DataFramelast_year = data['Год'].iloc[-1]
+forecast_years = list(range(last_year + 1, last_year + 1 + n_years_forecast))
+forecast_df = pd.DataFrame({'Год': forecast_years})
+
+for column in data.columns[1:]:
+    forecast_df[column] = forecast_data[column]
